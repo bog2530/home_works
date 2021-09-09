@@ -14,19 +14,19 @@
 
 """
 
-__name__ = int(input('Введите возраст: '))
+age = int(input('Введите возраст: '))
 
 
-def main(__name__):
-    if __name__ <= 6:
+def main(age):
+    if age <= 6:
         result = 'Детский сад!'
-    elif __name__ <= 18:
+    elif age <= 18:
         result = 'Школа!'
-    elif __name__ <= 24:
+    elif age <= 24:
         result = 'ВУЗ!'
     else:
         result = "Работа!"
     return(result)
 
-result = main(__name__)
+result = main(age)
 print(result)

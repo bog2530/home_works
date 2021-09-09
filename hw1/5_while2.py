@@ -21,8 +21,7 @@ questions_and_answers = {'Что делаешь?': 'Программирую',
 
 
 def ask_user(answers_dict):
-    running = True
-    while running:
+    while True:
         hello = input('Задайте вопрос: ')
         if hello == 'СТОП':
             break

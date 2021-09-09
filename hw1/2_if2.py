@@ -15,11 +15,8 @@
 
 """
 
-running = True
-
-
 def main(line_1, line_2):
-    if type(line_1) != str and type(line_2) != str:
+    if isinstance(line_1, str) != True and isinstance(line_2, str) != True:
         print(0)
     elif len(line_1) == len(line_2) and line_2 != 'learn':
         print(1)
@@ -31,7 +28,7 @@ def main(line_1, line_2):
         print('неизвестно')
 
 
-while running:
+while True:
     line_1 = input('Введите первую строку: ')
     line_2 = input('Введите вторую строку: ')
     if line_1 == 'STOP':

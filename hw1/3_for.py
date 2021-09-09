@@ -29,9 +29,9 @@ school = [
 def main(school):
     gen_scores = []
     for school_class in school:
-        scores_class = sum(school_class.get('scores')) / len(school_class.get('scores'))
+        scores_class = sum(school_class['scores']) / len(school_class['scores'])
         gen_scores.append(scores_class)
     return gen_scores
 
-
-print('Средний балл по школе: ', sum(main(school))/len(school), '\nСредний балл по классам: ', main(school))
+f_main = main(school)
+print('Средний балл по школе: ', sum(f_main)/len(school), '\nСредний балл по классам: ', f_main)

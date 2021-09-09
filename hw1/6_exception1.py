@@ -12,8 +12,7 @@
 
 def hello_user():
     try:
-        running = True
-        while running:
+        while True:
             hello = input('Как дела? ')
             if hello == 'Хорошо':
                 break
