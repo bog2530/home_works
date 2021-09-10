@@ -16,16 +16,15 @@
 """
 
 def main(line_1, line_2):
-    if isinstance(line_1, str) != True and isinstance(line_2, str) != True:
-        print(0)
-    elif len(line_1) == len(line_2) and line_2 != 'learn':
-        print(1)
-    elif len(line_1) > len(line_2):
-        print(2)
-    elif len(line_1) != len(line_2) and line_2 == 'learn':
-        print(3)
-    else:
-        print('неизвестно')
+    if isinstance(line_1, str) and isinstance(line_2, str):
+        if len(line_1) == len(line_2) and line_2 != 'learn':
+            print(1)
+        elif len(line_1) > len(line_2):
+            print(2)
+        elif len(line_1) != len(line_2) and line_2 == 'learn':
+            print(3)
+        else:
+            print('неизвестно')
 
 
 while True:
