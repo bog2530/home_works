@@ -25,9 +25,8 @@ def ask_user(answers_dict):
         hello = input('Задайте вопрос: ')
         if hello == 'СТОП':
             break
-        else:
-            answer = questions_and_answers.get(hello)
-            print(answer)
+        answer = questions_and_answers.get(hello)
+        print(answer)
 
 if __name__ == "__main__":
     ask_user(questions_and_answers)
