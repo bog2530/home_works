@@ -26,7 +26,7 @@ def main(age):
         result = 'ВУЗ!'
     else:
         result = "Работа!"
-    return(result)
+    return result
 
 result = main(age)
 print(result)
