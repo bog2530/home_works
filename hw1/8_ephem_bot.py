@@ -14,12 +14,24 @@
 """
 import logging
 import ephem
-import datetime
 
+from datetime import datetime
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 import settings
-import planets
+
+PLANETS = [
+    'Mercury',
+    'Venus',
+    'Mars',
+    'Jupiter',
+    'Saturn',
+    'Uranus',
+    'Neptune',
+    'Pluto',
+    'Sun',
+    'Moon',
+ ]
 
 logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
@@ -42,18 +54,17 @@ def greet_user(update, context):
 
 
 def constellation_to_me(update, context):
-    print('Вызван /planet')
-    user_planet = update.message.text.split(' ')
-    user_text, user_planet_text = user_planet
-    if user_planet_text in planets.PLANETS:
-        planet_gett = getattr(ephem, user_planet_text)
-        date = datetime.date.today()
-        planet = planet_gett(date)
-        planet_constellation= ephem.constellation(planet)
-        update.message.reply_text(f'Планета {user_planet_text} сегодня находится в созвездии {planet_constellation}')
-    else:
+    user_planet = update.message.text.split()
+    user_text_0, user_planet_text = user_planet
+    print('Вызван /planet', user_planet_text)
+    if user_planet_text not in PLANETS:
         update.message.reply_text('Я не знаю!!!')
-    
+        return
+    planet_gett = getattr(ephem, user_planet_text)
+    date = datetime.now()
+    planet = planet_gett(date)
+    planet_constellation = ephem.constellation(planet)
+    update.message.reply_text(f'Планета {user_planet_text} сегодня находится в созвездии {planet_constellation}')
 
 
 def main():
