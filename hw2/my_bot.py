@@ -13,11 +13,10 @@
 используйте ephem.next_full_moon(ДАТА)
 -----------------------------------------------------------------------------------------
 Уровень 3
-Научите бота играть в города. Правила такие - внутри бота есть список городов, 
-пользователь пишет /cities Москва и если в списке такой город есть, 
-бот отвечает городом на букву "а" - "Альметьевск, ваш ход". Оба города должны удаляться из списка.
+Научите бота выполнять основные арифметические действия с двумя числами: 
+сложение, вычитание, умножение и деление. 
+Если боту дать команду /calc 2-3, он должен ответить “-1”.
 
-Помните, с ботом могут играть несколько пользователей одновременно
 """
 import logging
 import ephem
@@ -28,6 +27,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import settings
 
 PUNC = '?!()-[]{\};:\'"\\,<>./#$%^&*_~'
+CALC_X = '+-/*'
 
 
 logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
@@ -46,37 +46,53 @@ PROXY = {
 
 def greet_user(update, context):
     text = 'Вызван /start'
-    print(text)
     update.message.reply_text(text)
-
 
 def wordcount(update, context):
     user_wordcount = update.message.text.split()
     user_text_1, *user_wordcount_text = user_wordcount
-    print('Вызван /planet', user_wordcount_text)
+    logging.info(f'/wordcount - {user_wordcount_text}')
     if not user_wordcount_text:
         update.message.reply_text('Пустая строка!!!')
         return
-    if ' '.join(user_wordcount_text).isdigit() == True:
+    if ' '.join(user_wordcount_text).isdigit():
         update.message.reply_text('В строке одни цифры!!!')
         return
-    meter = 0
-    for text_words in user_wordcount_text:
-            if text_words not in PUNC:
-                meter += 1
-                print(text_words)
+    meter = sum(1 for x in user_wordcount_text if x not in PUNC)
     update.message.reply_text(f'В тексте {meter} слов')
 
 def next_full_moon(update, context):
     user_next_full_moon = update.message.text
-    print('Вызван /next_full_moon')
     dt_moon = ephem.next_full_moon(datetime.now())
     dt_moon = ephem.localtime(dt_moon).strftime('%d.%m.%Y %H:%M')
     update.message.reply_text(f'Ближайшее полнолуние произойдет - {dt_moon}')
 
-def city_games(update, context):
-    pass
-            
+def calc(update, context):
+    calc_user = update.message.text.split()
+    user_text, calc_text = calc_user
+    for sign in calc_text:
+        if sign in CALC_X:
+            user_calc = calc_text.split(sign)
+            if sign == '+':
+                calc_text = int(user_calc[0]) + int(user_calc[1])
+                update.message.reply_text(calc_text)
+                return
+            if sign == '-':
+                calc_text = int(user_calc[0]) - int(user_calc[1])
+                update.message.reply_text(calc_text)
+                return
+            if sign == '*':
+                calc_text = int(user_calc[0]) * int(user_calc[1])
+                update.message.reply_text(calc_text)
+                return
+            try:
+                if sign == '/':
+                    calc_text = int(user_calc[0]) / int(user_calc[1])
+                    update.message.reply_text(calc_text)
+                    return
+            except ZeroDivisionError:
+                update.message.reply_text('Деление на 0')
+
 
 def main():
     mybot = Updater(settings.API_KEY, request_kwargs=PROXY, use_context=True)
@@ -85,7 +101,7 @@ def main():
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(CommandHandler("wordcount", wordcount))
     dp.add_handler(CommandHandler("next_full_moon", next_full_moon))
-    dp.add_handler(CommandHandler("city_game", city_games))
+    dp.add_handler(CommandHandler("calc", calc))
 
     mybot.start_polling()
     mybot.idle()
@@ -93,4 +109,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

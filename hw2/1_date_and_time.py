@@ -13,7 +13,7 @@ def print_days():
     dt_now = datetime.now()
     dt2 = dt_now - timedelta(days=1)
     dt3 = dt_now - timedelta(days=30)
-    print(dt2, '\n', dt_now, '\n', dt3)
+    print(dt2, dt_now, dt3, sep='\n')
 
 
 def str_2_datetime(date_string):

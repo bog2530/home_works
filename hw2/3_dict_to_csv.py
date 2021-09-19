@@ -10,7 +10,7 @@
 
 """
 import csv
-USERS_LIST = [
+USERS = [
     {'name': 'Alex', 'age': '35', 'job': 'Manager'},
     {'name': 'Max', 'age': '27', 'job': 'Engineer Designer'},
     {'name': 'Tatiana', 'age': '25', 'job': 'Technologist'},
@@ -21,8 +21,8 @@ def main():
         fieldes = ['name', 'age', 'job']
         writer = csv.DictWriter(f, fieldes, delimiter=';')
         writer.writeheader()
-        for user in USERS_LIST:
-            writer.writerow(user)
+        for user in USERS:
+            writer.writerows(user)
 
 if __name__ == "__main__":
     main()

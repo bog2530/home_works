@@ -18,13 +18,8 @@ def main():
         text_words = len(text_file.split())
         print(text_words)
     with open('referat2.txt', 'w', encoding='utf -8') as f_1:
-        for text_stick in text_file:
-            if text_stick != '.':
-                text_file = f_1.write(text_stick)
-            else:
-                text_file = f_1.write(text_stick.replace('.', '!'))
-                
-                
+        text_file = f_1.write(text_file.replace('.', '!'))
+              
     
 
 if __name__ == "__main__":
