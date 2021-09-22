@@ -18,11 +18,10 @@ USERS = [
 ]
 def main():
     with open('users.csv', 'w', encoding='utf-8') as f:
-        fieldes = ['name', 'age', 'job']
-        writer = csv.DictWriter(f, fieldes, delimiter=';')
+        fields = ['name', 'age', 'job']
+        writer = csv.DictWriter(f, fields, delimiter=';')
         writer.writeheader()
-        for user in USERS:
-            writer.writerows(user)
+        writer.writerows(USERS)
 
 if __name__ == "__main__":
     main()

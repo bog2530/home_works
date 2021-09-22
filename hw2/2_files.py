@@ -12,12 +12,12 @@
 """
 
 def main():
-    with open('referat.txt', 'r', encoding='utf -8') as f:
+    with open('referat.txt', 'r', encoding='utf-8') as f:
         text_file = f.read()
-        print(len(text_file))
-        text_words = len(text_file.split())
-        print(text_words)
-    with open('referat2.txt', 'w', encoding='utf -8') as f_1:
+    print(len(text_file))
+    text_words = len(text_file.split())
+    print(text_words)
+    with open('referat2.txt', 'w', encoding='utf-8') as f_1:
         text_file = f_1.write(text_file.replace('.', '!'))
               
     

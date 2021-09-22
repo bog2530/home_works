@@ -22,12 +22,12 @@ import logging
 import ephem
 
 from datetime import datetime
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler
 
 import settings
 
 PUNC = '?!()-[]{\};:\'"\\,<>./#$%^&*_~'
-CALC_X = '+-/*'
+CALC_X = ['+', '-', '/', '**', '*']
 
 
 logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
@@ -67,31 +67,36 @@ def next_full_moon(update, context):
     dt_moon = ephem.localtime(dt_moon).strftime('%d.%m.%Y %H:%M')
     update.message.reply_text(f'Ближайшее полнолуние произойдет - {dt_moon}')
 
+
+def calc_1(x, y , operation):
+    operations = {
+        '+': lambda x, y: x + y,
+        '-': lambda x, y: x - y,
+        '*': lambda x, y: x * y,
+        '/': lambda x, y: x / y,
+    }
+    op_calc = operations.get(operation)
+    return op_calc(x, y)
+
+
 def calc(update, context):
     calc_user = update.message.text.split()
-    user_text, calc_text = calc_user
+    try:
+        user_text, calc_text = calc_user
+    except ValueError: 
+        update.message.reply_text('Формат ввода: x+y!') 
     for sign in calc_text:
         if sign in CALC_X:
             user_calc = calc_text.split(sign)
-            if sign == '+':
-                calc_text = int(user_calc[0]) + int(user_calc[1])
-                update.message.reply_text(calc_text)
-                return
-            if sign == '-':
-                calc_text = int(user_calc[0]) - int(user_calc[1])
-                update.message.reply_text(calc_text)
-                return
-            if sign == '*':
-                calc_text = int(user_calc[0]) * int(user_calc[1])
-                update.message.reply_text(calc_text)
-                return
+            logging.info(f'/wordcount - {user_calc}')
             try:
-                if sign == '/':
-                    calc_text = int(user_calc[0]) / int(user_calc[1])
-                    update.message.reply_text(calc_text)
-                    return
+                update.message.reply_text(calc_1(float(user_calc[0]), float(user_calc[1]), sign))
+            except ValueError:
+                update.message.reply_text('Недопустимое значение') 
             except ZeroDivisionError:
-                update.message.reply_text('Деление на 0')
+                update.message.reply_text('Деление на 0') 
+            return
+    update.message.reply_text('Поддерживаются только операции +, -, *, /')
 
 
 def main():
